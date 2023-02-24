@@ -11,9 +11,9 @@
 /* LAYOUT
 /*******************************************/
 img{
-  display: block;
+  display: inline;
   margin: 0 auto;
-  width: 50px;
+  width: 150px;
 }
 
 

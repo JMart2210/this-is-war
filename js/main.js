@@ -1,15 +1,18 @@
 let deckID = '';
-let p1Stack = [];
-let p2Stack = [];
+let p1Hand = [];
+let p2Hand = [];
+let p1Wins = [];
+let p2Wins = [];
 let pot = [];
-const lenP1 = document.querySelector('#p1Stack');
-const lenP2 = document.querySelector('#p2Stack');
+let war = false;
+const lenP1 = document.querySelector('#p1Hand');
+const lenP2 = document.querySelector('#p2Hand');
 fetch(`https://deckofcardsapi.com/api/deck/new/draw/?count=52`)
       .then(res => res.json()) // parse response as JSON
       .then(data => {
         deckID = data.deck_id
-        p1Stack.push(...data.cards.filter((card, i) => i % 2 === 0))
-        p2Stack.push(...data.cards.filter((card, i) => i % 2 !== 0))
+        p1Hand.push(...data.cards.filter((card, i) => i % 2 === 0))
+        p2Hand.push(...data.cards.filter((card, i) => i % 2 !== 0))
       })
       .catch(err => {
           console.log(`error ${err}`)
@@ -19,31 +22,59 @@ document.querySelector('button').addEventListener('click', playHand)
 
 function playHand(){
   let n = pot.length === 0 ? 0 : 1;
-  console.log(n)
-  let p1 = getValue(p1Stack[n].value)
-  let p2 = getValue(p2Stack[n].value)
-  document.querySelector('#player1').src = p1Stack[n].image
-  document.querySelector('#player2').src = p2Stack[n].image
-  for (let i = 0; i <= n; i++) {
-    pot.push(p1Stack.shift(), p2Stack.shift())
+  document.querySelector('#p1Wins').textContent = `${p1Wins.length}`
+  document.querySelector('#p2Wins').textContent = `${p2Wins.length}`
+  let p1 = getValue(p1Hand[n].value)
+  let p2 = getValue(p2Hand[n].value)
+  if (war) {
+    document.querySelector('#img11').src = p1Hand[0].image
+    document.querySelector('#img12').src = p1Hand[1].image
+    document.querySelector('#img21').src = p2Hand[0].image
+    document.querySelector('#img22').src = p2Hand[1].image
+  } else {
+    document.querySelector('#img10').src = p1Hand[n].image
+    document.querySelector('#img11').src = ''
+    document.querySelector('#img12').src = ''
+    document.querySelector('#img20').src = p2Hand[n].image
+    document.querySelector('#img21').src = ''
+    document.querySelector('#img22').src = ''
   }
-  console.log({p1Stack, p2Stack, pot})
+  for (let i = 0; i <= n; i++) {
+    pot.push(p1Hand.shift(), p2Hand.shift())
+  }
+  lenP1.textContent = `${p1Hand.length}`
+  lenP2.textContent = `${p2Hand.length}`
+  
   let winner = compareCards(p1, p2);
+
   if (winner === 1) {
     document.querySelector('h3').textContent = 'Player 1 wins'
-    p1Stack.push(...pot);
+    p1Wins.push(...pot);
     pot = []
-    console.log({p1Stack,p2Stack})
+    war = false;
   }else if (winner === 2) {
     document.querySelector('h3').textContent = 'Player 2 wins'
-    p2Stack.push(...pot);
+    p2Wins.push(...pot);
     pot = [];
-    console.log({p1Stack,p2Stack})
+    war = false;
   } else {
     document.querySelector('h3').textContent = 'Time for War!'
+    war = true;
   }
-  lenP1.textContent = `${p1Stack.length}`
-  lenP2.textContent = `${p2Stack.length}`
+  checkHandSize();
+}
+function checkHandSize(){
+  let needed = war? 2 : 0;
+  if (p1Hand.length <= needed) {
+    p1Hand.push(...p1Wins);
+    p1Wins = [];
+  } else if (p1Hand.length <= needed ) {
+    alert('Player 2 Wins!')
+  } 
+  if (p2Hand.length <= needed){
+    p2Hand.push(...p2Wins);
+    p2Wins = [];
+  } else if (p2Hand.length <= needed) alert('Player 1 Wins!');
 }
 function compareCards(p1, p2){
   if (p1 > p2) {
@@ -55,8 +86,6 @@ function compareCards(p1, p2){
     document.querySelector('h3').textContent = 'Time for War!'
     return 0;
   }
-  console.log({pile1, pile2})
-  console.log({c1, c2})
 }
 function getValue(n){
   switch (true) {
@@ -72,17 +101,3 @@ function getValue(n){
       return Number(n);            
   }
 }
-function war(data){
-  const url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=6`
-  fetch(url)
-      .then(res => res.json()) // parse response as JSON
-      .then(data => {
-        document.querySelector('#player1').src = data.cards[0].image
-        document.querySelector('#player2').src = data.cards[1].image
-        compareCards(data);
-      })
-      .catch(err => {
-          console.log(`error ${err}`)
-      });
-}
-
