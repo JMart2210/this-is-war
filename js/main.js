@@ -7,6 +7,9 @@ let pot = [];
 let war = false;
 const lenP1 = document.querySelector('#p1Hand');
 const lenP2 = document.querySelector('#p2Hand');
+const p1Progress = document.querySelector('#p1Progress');
+const p2Progress = document.querySelector('#p2Progress');
+
 fetch(`https://deckofcardsapi.com/api/deck/new/draw/?count=52`)
       .then(res => res.json()) // parse response as JSON
       .then(data => {
@@ -44,6 +47,8 @@ function playHand(){
   }
   lenP1.textContent = `${p1Hand.length}`
   lenP2.textContent = `${p2Hand.length}`
+  p1Progress.value = p1Hand.length + p1Wins.length
+  p2Progress.value = p2Hand.length + p2Wins.length
   
   let winner = compareCards(p1, p2);
 

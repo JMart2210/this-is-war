@@ -10,13 +10,34 @@
 /******************************************
 /* LAYOUT
 /*******************************************/
+body{
+  text-align: center;
+}
+.gameContainer{
+  display: flex;
+  justify-content: space-evenly;
+  height: 400px;
+}
+section{
+  padding: 20px;
+}
+.cardDisplay{
+  height: 200px;
+  display: flex;
+  justify-content: start;
+}
 img{
-  display: inline;
-  margin: 0 auto;
-  width: 150px;
+  min-width: 55px;
+  max-width: 150px;
 }
 
 
 /******************************************
 /* ADDITIONAL STYLES
 /*******************************************/
+h4{
+  margin-bottom: 0;
+}
+h1{
+  text-align: center;
+}

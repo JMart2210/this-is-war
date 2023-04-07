@@ -14,22 +14,31 @@
 	<body>
 
 		<h1>This is War!</h1>
-
-		<h4>Player 1</h4>
-		<p>Cards in hand: <span id="p1Hand">26</span></p>
-		<img id="img10" src="" alt="playing card">
-		<img id="img11" src="" alt="">
-		<img id="img12" src="" alt="">
-		<p>Won pile: <span id="p1Wins">0</span></p>
-		<h4>Player 2</h4>
-		<p>Cards in hand: <span id="p2Hand">26</span></p>
-		<img id="img20" src="" alt="playing card">
-		<img id="img21" src="" alt="">
-		<img id="img22" src="" alt="">
-		<p>Won pile: <span id="p2Wins">0</span></p>
-		
-
 		<h3></h3>
+		<main class="gameContainer">
+			<section class="player1">
+				<h4>Player 1</h4>
+				<meter id="p1Progress" low="20" max="52" value="26"></meter><br>
+				<p>Cards in hand: <span id="p1Hand">26</span></p>
+				<div class="cardDisplay">
+					<img id="img10" src="" alt="">
+					<img id="img11" src="" alt="">
+					<img id="img12" src="" alt="">
+				</div>
+				<p>Won pile: <span id="p1Wins">0</span></p>
+			</section>
+			<section class="player2">
+				<h4>Player 2</h4>
+				<meter id="p2Progress" low="20" max="52" value="26"></meter><br>
+				<p>Cards in hand: <span id="p2Hand">26</span></p>
+				<div class="cardDisplay">
+					<img id="img20" src="" alt="">
+					<img id="img21" src="" alt="">
+					<img id="img22" src="" alt="">
+				</div>
+				<p>Won pile: <span id="p2Wins">0</span></p>
+			</section>
+		</main>
 
 		<button>Next Hand</button>
 		
